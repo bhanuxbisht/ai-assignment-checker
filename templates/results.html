@@ -1,0 +1,120 @@
+{% extends "base.html" %}
+
+{% block title %}AI Assignment Checker - Evaluation Results{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <div class="card shadow">
+            <div class="card-header bg-success text-white d-flex justify-content-between align-items-center">
+                <h4 class="mb-0">
+                    <i class="fas fa-chart-bar me-2"></i>
+                    Evaluation Results
+                </h4>
+                <span class="badge bg-light text-dark">{{ results.evaluations|length }} Students</span>
+            </div>
+            <div class="card-body">
+                <!-- Summary Statistics -->
+                <div class="row mb-4">
+                    <div class="col-md-3">
+                        <div class="card bg-primary text-white">
+                            <div class="card-body text-center">
+                                <h5>{{ results.evaluations|length }}</h5>
+                                <small>Total Students</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card bg-success text-white">
+                            <div class="card-body text-center">
+                                <h5>{{ "%.1f"|format(results.evaluations|map(attribute='score')|list|sum / results.evaluations|length) }}</h5>
+                                <small>Average Score</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card bg-info text-white">
+                            <div class="card-body text-center">
+                                <h5>{{ results.evaluations|map(attribute='score')|max }}</h5>
+                                <small>Highest Score</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card bg-warning text-white">
+                            <div class="card-body text-center">
+                                <h5>{{ results.evaluations|map(attribute='score')|min }}</h5>
+                                <small>Lowest Score</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Download Excel Report Button -->
+                <div class="text-center mb-4">
+                    <a href="{{ url_for('download_file', filename=excel_path) }}" class="btn btn-success btn-lg">
+                        <i class="fas fa-download me-2"></i>
+                        Download Excel Report
+                    </a>
+                    <a href="{{ url_for('index') }}" class="btn btn-outline-primary btn-lg ms-2">
+                        <i class="fas fa-plus me-2"></i>
+                        Evaluate New Assignment
+                    </a>
+                </div>
+
+                <!-- Individual Results -->
+                <h5 class="mb-3">Individual Student Results</h5>
+                <div class="accordion" id="resultsAccordion">
+                    {% for evaluation in results.evaluations %}
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="heading{{ loop.index }}">
+                            <button class="accordion-button {% if not loop.first %}collapsed{% endif %}" 
+                                    type="button" data-bs-toggle="collapse" 
+                                    data-bs-target="#collapse{{ loop.index }}" 
+                                    aria-expanded="{% if loop.first %}true{% else %}false{% endif %}" 
+                                    aria-controls="collapse{{ loop.index }}">
+                                <div class="d-flex w-100 justify-content-between align-items-center me-3">
+                                    <div>
+                                        <strong>Student {{ loop.index }}</strong> - {{ evaluation.student_file }}
+                                    </div>
+                                    <div>
+                                        <span class="badge {% if evaluation.score >= 8 %}bg-success{% elif evaluation.score >= 6 %}bg-warning{% else %}bg-danger{% endif %} fs-6">
+                                            {{ evaluation.score }}/10
+                                        </span>
+                                    </div>
+                                </div>
+                            </button>
+                        </h2>
+                        <div id="collapse{{ loop.index }}" 
+                             class="accordion-collapse collapse {% if loop.first %}show{% endif %}" 
+                             aria-labelledby="heading{{ loop.index }}" 
+                             data-bs-parent="#resultsAccordion">
+                            <div class="accordion-body">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <h6><i class="fas fa-file-alt me-2"></i>Student Answer (Preview)</h6>
+                                        <div class="border p-3 bg-light rounded">
+                                            <small>{{ evaluation.student_answer }}</small>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <h6><i class="fas fa-comments me-2"></i>AI Feedback</h6>
+                                        <div class="border p-3 bg-light rounded">
+                                            <p><strong>Score:</strong> {{ evaluation.score }}/10</p>
+                                            <p><strong>Feedback:</strong> {{ evaluation.feedback }}</p>
+                                            {% if evaluation.suggestions %}
+                                            <p><strong>Suggestions:</strong> {{ evaluation.suggestions }}</p>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

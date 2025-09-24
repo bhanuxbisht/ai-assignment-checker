@@ -1,0 +1,102 @@
+{% extends "base.html" %}
+
+{% block title %}AI Assignment Checker - Upload Files{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-8 mx-auto">
+        <div class="card shadow">
+            <div class="card-header bg-primary text-white">
+                <h4 class="mb-0">
+                    <i class="fas fa-upload me-2"></i>
+                    Upload Assignment Files
+                </h4>
+            </div>
+            <div class="card-body">
+                <div class="alert alert-info">
+                    <i class="fas fa-info-circle me-2"></i>
+                    <strong>Instructions:</strong>
+                    <ul class="mb-0 mt-2">
+                        <li>Upload the question paper (PDF or Image)</li>
+                        <li>Upload multiple student answer sheets</li>
+                        <li>Supported formats: PDF, PNG, JPG, JPEG, GIF, TXT</li>
+                        <li>Maximum file size: 16MB per file</li>
+                    </ul>
+                </div>
+
+                <form id="uploadForm" method="POST" action="{{ url_for('upload_files') }}" enctype="multipart/form-data">
+                    <!-- Question Paper Upload -->
+                    <div class="mb-4">
+                        <label for="question_file" class="form-label">
+                            <i class="fas fa-file-alt me-2"></i>
+                            Question Paper
+                        </label>
+                        <input type="file" class="form-control" id="question_file" name="question_file" 
+                               accept=".pdf,.png,.jpg,.jpeg,.gif,.txt" required>
+                        <div class="form-text">Upload the question paper that students need to answer.</div>
+                    </div>
+
+                    <!-- Answer Sheets Upload -->
+                    <div class="mb-4">
+                        <label for="answer_files" class="form-label">
+                            <i class="fas fa-file-upload me-2"></i>
+                            Student Answer Sheets
+                        </label>
+                        <input type="file" class="form-control" id="answer_files" name="answer_files" 
+                               accept=".pdf,.png,.jpg,.jpeg,.gif,.txt" multiple required>
+                        <div class="form-text">Select multiple student answer sheets to evaluate.</div>
+                    </div>
+
+                    <!-- Upload Progress -->
+                    <div id="uploadProgress" class="mb-3" style="display: none;">
+                        <div class="progress">
+                            <div class="progress-bar progress-bar-striped progress-bar-animated" 
+                                 role="progressbar" style="width: 0%"></div>
+                        </div>
+                        <small class="text-muted">Processing files... This may take a few minutes.</small>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-primary btn-lg" id="submitBtn">
+                            <i class="fas fa-magic me-2"></i>
+                            Start AI Evaluation
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Features Section -->
+        <div class="row mt-5">
+            <div class="col-md-4">
+                <div class="text-center">
+                    <div class="feature-icon bg-primary text-white rounded-circle mx-auto mb-3">
+                        <i class="fas fa-eye fa-2x"></i>
+                    </div>
+                    <h5>OCR Technology</h5>
+                    <p class="text-muted">Extract text from images and PDFs automatically using advanced OCR.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="text-center">
+                    <div class="feature-icon bg-success text-white rounded-circle mx-auto mb-3">
+                        <i class="fas fa-brain fa-2x"></i>
+                    </div>
+                    <h5>AI Evaluation</h5>
+                    <p class="text-muted">Powered by Gemini AI for intelligent answer evaluation and feedback.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="text-center">
+                    <div class="feature-icon bg-info text-white rounded-circle mx-auto mb-3">
+                        <i class="fas fa-file-excel fa-2x"></i>
+                    </div>
+                    <h5>Excel Reports</h5>
+                    <p class="text-muted">Generate comprehensive Excel reports with scores and feedback.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

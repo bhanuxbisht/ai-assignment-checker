@@ -1,0 +1,16 @@
+Student Answer 1 - John Doe
+
+1. What is artificial intelligence?
+AI is like making computers smart so they can think like people. It's when we program machines to do things that normally need human brains, like recognizing faces, understanding speech, and making decisions. AI helps computers solve problems and learn from experience.
+
+2. Explain the difference between machine learning and deep learning.
+Machine learning is when computers learn from data without being told exactly what to do. Deep learning is a special type of machine learning that uses many layers of artificial neurons, kind of like how our brain works. Deep learning is better at handling complex data like images and speech.
+
+3. What are the main applications of AI in today's world?
+AI is everywhere! It's used in:
+- Hospitals to help doctors diagnose diseases
+- Cars that can drive themselves
+- Banks to catch fraud
+- Netflix to recommend movies
+- Schools for online learning
+- Customer support with chatbots

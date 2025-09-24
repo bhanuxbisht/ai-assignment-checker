@@ -1,0 +1,16 @@
+Student Answer 2 - Jane Smith
+
+1. What is artificial intelligence?
+Artificial Intelligence is the development of computer systems that can perform tasks requiring human-like intelligence. This includes learning, reasoning, problem-solving, perception, and language understanding. AI systems use algorithms and data to make predictions and decisions autonomously.
+
+2. Explain the difference between machine learning and deep learning.
+Machine Learning is a branch of AI where algorithms improve their performance through experience with data. Deep Learning uses artificial neural networks with multiple hidden layers to model and understand complex patterns in data. Deep learning excels at processing unstructured data like images, text, and audio.
+
+3. What are the main applications of AI in today's world?
+Current AI applications span multiple sectors:
+- Healthcare: Diagnostic imaging, personalized treatment
+- Automotive: Self-driving cars, predictive maintenance  
+- Finance: Risk assessment, robo-advisors
+- Technology: Search engines, virtual assistants
+- Manufacturing: Quality control, predictive maintenance
+- Retail: Inventory management, price optimization

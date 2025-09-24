@@ -1,0 +1,16 @@
+Sample Question Paper
+
+1. What is artificial intelligence?
+Artificial Intelligence (AI) refers to the simulation of human intelligence in machines that are programmed to think and learn like humans. It involves creating computer systems capable of performing tasks that typically require human intelligence, such as visual perception, speech recognition, decision-making, and language translation.
+
+2. Explain the difference between machine learning and deep learning.
+Machine Learning is a subset of AI that enables machines to learn automatically from data without being explicitly programmed. Deep Learning is a subset of machine learning that uses neural networks with multiple layers (deep neural networks) to analyze and learn from data, mimicking the way human brains process information.
+
+3. What are the main applications of AI in today's world?
+AI applications include:
+- Healthcare: Medical diagnosis, drug discovery
+- Transportation: Autonomous vehicles, traffic management
+- Finance: Fraud detection, algorithmic trading
+- Entertainment: Recommendation systems, content creation
+- Education: Personalized learning, automated grading
+- Customer Service: Chatbots, virtual assistants
