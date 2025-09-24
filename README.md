@@ -2,6 +2,8 @@
 
 An intelligent web application that helps teachers automatically evaluate student assignments using AI, OCR, and NLP technologies. Upload question papers and student answers, and get detailed evaluations with scores and feedback in seconds!
 
+**🎯 Last Updated: September 24, 2025 - Fully functional and deployed!**
+
 ![AI Assignment Checker](https://img.shields.io/badge/AI%20Powered-Gemini%20AI-blue)
 ![Python](https://img.shields.io/badge/Python-3.9%2B-green)
 ![Flask](https://img.shields.io/badge/Flask-Web%20Framework-red)
