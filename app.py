@@ -101,11 +101,46 @@ def extract_text_from_pdf(pdf_path):
         return ""
 
 def extract_text_from_image(image_path):
-    """Extract text from image using OCR"""
+    """Extract text from image using OCR with enhanced handwriting support"""
     try:
         image = Image.open(image_path)
-        text = pytesseract.image_to_string(image)
-        return text
+        
+        # Try multiple OCR configurations for better handwriting recognition
+        configs = [
+            '--psm 6',  # Uniform block of text (default)
+            '--psm 4',  # Single column of text
+            '--psm 8',  # Single word
+            '--psm 13', # Raw line without heuristics (good for handwriting)
+        ]
+        
+        best_text = ""
+        best_confidence = 0
+        
+        for config in configs:
+            try:
+                # Extract text with current configuration
+                text = pytesseract.image_to_string(image, config=config)
+                
+                # Get confidence score
+                data = pytesseract.image_to_data(image, config=config, output_type=pytesseract.Output.DICT)
+                confidences = [int(conf) for conf in data['conf'] if int(conf) > 0]
+                avg_confidence = sum(confidences) / len(confidences) if confidences else 0
+                
+                # Keep the best result
+                if avg_confidence > best_confidence and len(text.strip()) > len(best_text.strip()):
+                    best_text = text
+                    best_confidence = avg_confidence
+                    
+            except Exception as config_error:
+                continue
+        
+        # If no good result, try standard extraction
+        if not best_text.strip():
+            best_text = pytesseract.image_to_string(image)
+            
+        print(f"OCR confidence: {best_confidence:.1f}%")
+        return best_text
+        
     except Exception as e:
         print(f"Error extracting text from image: {e}")
         return ""

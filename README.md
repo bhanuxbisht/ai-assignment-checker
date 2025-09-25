@@ -27,7 +27,27 @@ An intelligent web application that helps teachers automatically evaluate studen
 - Tesseract OCR (for image text extraction)
 - Google Gemini API key
 
-### Installation
+## 🚀 Quick Start (Choose Your Method)
+
+### 🐳 Option 1: Docker (Easiest - Recommended for Testing)
+
+**For friends who just want to try the app:**
+
+```bash
+# 1. Install Docker Desktop (one-time setup)
+# 2. Run the app instantly
+docker run -p 5000:5000 -e GEMINI_API_KEY=your_api_key bhanuxbisht/ai-assignment-checker
+
+# 3. Open browser: http://localhost:5000
+```
+
+**Benefits:** ✅ No Python installation ✅ No dependencies ✅ Works on all OS
+
+### 💻 Option 2: Traditional Installation (For Developers)
+
+**For friends who want to modify the code:**
+
+#### Installation Steps
 
 1. **Clone the repository**
    ```bash
