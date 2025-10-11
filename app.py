@@ -38,10 +38,10 @@ api_key = os.getenv('GEMINI_API_KEY')
 if api_key and api_key != 'your_gemini_api_key_here':
     try:
         genai.configure(api_key=api_key)
-        # Use the latest working model
-        model = genai.GenerativeModel('gemini-1.5-flash')
-        vision_model = genai.GenerativeModel('gemini-1.5-flash')
-        print("✅ Gemini AI configured successfully with gemini-1.5-flash")
+        # Use the stable working model (Gemini 2.0 Flash)
+        model = genai.GenerativeModel('gemini-2.0-flash')
+        vision_model = genai.GenerativeModel('gemini-2.0-flash')
+        print("✅ Gemini AI configured successfully with gemini-2.0-flash")
     except Exception as e:
         print(f"❌ Gemini AI configuration failed: {e}")
         print("💡 Please check your API key in .env file")
