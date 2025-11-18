@@ -36,15 +36,33 @@
                         <div class="form-text">Upload the question paper that students need to answer.</div>
                     </div>
 
-                    <!-- Answer Sheets Upload -->
+                    <!-- Answer Sheets Upload with Dynamic Add/Remove -->
                     <div class="mb-4">
-                        <label for="answer_files" class="form-label">
+                        <label class="form-label">
                             <i class="fas fa-file-upload me-2"></i>
                             Student Answer Sheets
                         </label>
-                        <input type="file" class="form-control" id="answer_files" name="answer_files" 
-                               accept=".pdf,.png,.jpg,.jpeg,.gif,.txt" multiple required>
-                        <div class="form-text">Select multiple student answer sheets to evaluate.</div>
+                        
+                        <!-- File List Container -->
+                        <div id="answerFilesList" class="mb-3">
+                            <!-- Files will be added here dynamically -->
+                        </div>
+                        
+                        <!-- Add File Button -->
+                        <button type="button" class="btn btn-outline-primary btn-sm" id="addFileBtn">
+                            <i class="fas fa-plus me-2"></i>
+                            Add Answer File
+                        </button>
+                        
+                        <!-- Hidden file input -->
+                        <input type="file" id="hiddenFileInput" 
+                               accept=".pdf,.png,.jpg,.jpeg,.gif,.txt" 
+                               style="display: none;">
+                        
+                        <div class="form-text mt-2">
+                            Click "Add Answer File" to select files from different folders. 
+                            You can add files one by one and remove unwanted ones.
+                        </div>
                     </div>
 
                     <!-- Upload Progress -->

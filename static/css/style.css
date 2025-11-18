@@ -142,3 +142,46 @@ footer {
     border-color: #198754;
     background-color: rgba(25, 135, 84, 0.1);
 }
+
+/* File item cards for dynamic file manager */
+.file-item {
+    border-left: 4px solid #0d6efd;
+    transition: all 0.2s ease-in-out;
+    animation: slideIn 0.3s ease-out;
+}
+
+.file-item:hover {
+    transform: translateX(5px);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.file-item .btn-outline-danger {
+    opacity: 0.7;
+    transition: opacity 0.2s;
+}
+
+.file-item:hover .btn-outline-danger {
+    opacity: 1;
+}
+
+#answerFilesList:empty::before {
+    content: "No files added yet. Click 'Add Answer File' to select files.";
+    display: block;
+    padding: 1rem;
+    text-align: center;
+    color: #6c757d;
+    background-color: #f8f9fa;
+    border: 2px dashed #dee2e6;
+    border-radius: 0.375rem;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateX(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}

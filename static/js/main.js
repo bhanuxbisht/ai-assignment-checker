@@ -1,11 +1,123 @@
 // Main JavaScript for AI Assignment Checker
 
+// Global file storage for dynamic file management
+let answerFiles = [];
+let fileIdCounter = 0;
+
 document.addEventListener('DOMContentLoaded', function() {
     // Initialize form validation and progress tracking
     initializeUploadForm();
     initializeFilePreview();
     initializeDragAndDrop();
+    initializeDynamicFileManager();
 });
+
+function initializeDynamicFileManager() {
+    const addFileBtn = document.getElementById('addFileBtn');
+    const hiddenFileInput = document.getElementById('hiddenFileInput');
+    
+    if (addFileBtn && hiddenFileInput) {
+        // When "Add File" button is clicked
+        addFileBtn.addEventListener('click', function() {
+            hiddenFileInput.click();
+        });
+        
+        // When file is selected through hidden input
+        hiddenFileInput.addEventListener('change', function(e) {
+            const files = e.target.files;
+            if (files.length > 0) {
+                addFilesToList(files);
+                // Reset the input so the same file can be added again if needed
+                hiddenFileInput.value = '';
+            }
+        });
+    }
+}
+
+function addFilesToList(files) {
+    const filesList = document.getElementById('answerFilesList');
+    
+    Array.from(files).forEach(file => {
+        // Check if file is valid
+        if (!isValidFileType(file)) {
+            showNotification(`Invalid file type for ${file.name}. Only PDF, Images, and Text files are allowed.`, 'warning');
+            return;
+        }
+        
+        if (file.size > 16 * 1024 * 1024) {
+            showNotification(`File ${file.name} is too large (max 16MB).`, 'warning');
+            return;
+        }
+        
+        // Add file to global storage
+        const fileId = fileIdCounter++;
+        answerFiles.push({ id: fileId, file: file });
+        
+        // Create file card
+        const fileCard = createFileCard(fileId, file);
+        filesList.appendChild(fileCard);
+    });
+    
+    updateFileCount();
+}
+
+function createFileCard(fileId, file) {
+    const card = document.createElement('div');
+    card.className = 'card mb-2 file-item';
+    card.setAttribute('data-file-id', fileId);
+    
+    const fileSize = (file.size / 1024 / 1024).toFixed(2);
+    const fileIcon = getFileIcon(file.name);
+    
+    card.innerHTML = `
+        <div class="card-body p-2 d-flex align-items-center justify-content-between">
+            <div class="d-flex align-items-center">
+                <i class="${fileIcon} me-2 fa-lg"></i>
+                <div>
+                    <strong>${file.name}</strong>
+                    <small class="text-muted d-block">${fileSize} MB</small>
+                </div>
+            </div>
+            <button type="button" class="btn btn-sm btn-outline-danger remove-file-btn" 
+                    data-file-id="${fileId}" title="Remove this file">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+    `;
+    
+    // Add remove functionality
+    const removeBtn = card.querySelector('.remove-file-btn');
+    removeBtn.addEventListener('click', function() {
+        removeFile(fileId);
+    });
+    
+    return card;
+}
+
+function removeFile(fileId) {
+    // Remove from global storage
+    answerFiles = answerFiles.filter(f => f.id !== fileId);
+    
+    // Remove from DOM
+    const fileCard = document.querySelector(`[data-file-id="${fileId}"]`);
+    if (fileCard) {
+        fileCard.remove();
+    }
+    
+    updateFileCount();
+    showNotification('File removed successfully', 'info');
+}
+
+function updateFileCount() {
+    const addFileBtn = document.getElementById('addFileBtn');
+    if (addFileBtn) {
+        const count = answerFiles.length;
+        addFileBtn.innerHTML = `
+            <i class="fas fa-plus me-2"></i>
+            Add Answer File ${count > 0 ? `(${count} added)` : ''}
+        `;
+    }
+}
 
 function initializeUploadForm() {
     const form = document.getElementById('uploadForm');
@@ -15,11 +127,26 @@ function initializeUploadForm() {
 
     if (form) {
         form.addEventListener('submit', function(e) {
+            e.preventDefault(); // Always prevent default to handle files manually
+            
             // Validate files before submission
             if (!validateFiles()) {
-                e.preventDefault();
                 return false;
             }
+            
+            // Prepare FormData with dynamic files
+            const formData = new FormData();
+            
+            // Add question file
+            const questionFile = document.getElementById('question_file');
+            if (questionFile.files.length > 0) {
+                formData.append('question_file', questionFile.files[0]);
+            }
+            
+            // Add answer files from global storage
+            answerFiles.forEach(fileObj => {
+                formData.append('answer_files', fileObj.file);
+            });
 
             // Show progress and disable button
             if (submitBtn) {
@@ -31,13 +158,41 @@ function initializeUploadForm() {
                 progressDiv.style.display = 'block';
                 simulateProgress();
             }
+            
+            // Submit form via AJAX
+            fetch(form.action, {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => {
+                if (response.ok) {
+                    return response.text();
+                }
+                throw new Error('Upload failed');
+            })
+            .then(html => {
+                // Replace page content with response
+                document.open();
+                document.write(html);
+                document.close();
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                showNotification('Upload failed. Please try again.', 'danger');
+                if (submitBtn) {
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = '<i class="fas fa-magic me-2"></i>Start AI Evaluation';
+                }
+                if (progressDiv) {
+                    progressDiv.style.display = 'none';
+                }
+            });
         });
     }
 }
 
 function validateFiles() {
     const questionFile = document.getElementById('question_file');
-    const answerFiles = document.getElementById('answer_files');
     
     let isValid = true;
     let errorMessage = '';
@@ -57,25 +212,14 @@ function validateFiles() {
         }
     }
 
-    // Validate answer files
-    if (!answerFiles.files.length) {
-        errorMessage += 'Please select at least one answer sheet.\n';
+    // Validate answer files from global storage
+    if (answerFiles.length === 0) {
+        errorMessage += 'Please add at least one answer sheet using "Add Answer File" button.\n';
         isValid = false;
-    } else {
-        for (let file of answerFiles.files) {
-            if (!isValidFileType(file)) {
-                errorMessage += `Invalid file type for ${file.name}. Only PDF, Images, and Text files are allowed.\n`;
-                isValid = false;
-            }
-            if (file.size > 16 * 1024 * 1024) {
-                errorMessage += `File ${file.name} is too large (max 16MB).\n`;
-                isValid = false;
-            }
-        }
     }
 
     if (!isValid) {
-        alert(errorMessage);
+        showNotification(errorMessage, 'danger');
     }
 
     return isValid;
@@ -107,19 +251,14 @@ function simulateProgress() {
 
 function initializeFilePreview() {
     const questionFile = document.getElementById('question_file');
-    const answerFiles = document.getElementById('answer_files');
 
     if (questionFile) {
         questionFile.addEventListener('change', function(e) {
             updateFilePreview('question', e.target.files);
         });
     }
-
-    if (answerFiles) {
-        answerFiles.addEventListener('change', function(e) {
-            updateFilePreview('answers', e.target.files);
-        });
-    }
+    
+    // Note: Answer files preview is now handled by createFileCard() function
 }
 
 function updateFilePreview(type, files) {
