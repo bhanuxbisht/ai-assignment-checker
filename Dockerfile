@@ -31,4 +31,5 @@ ENV FLASK_ENV=production
 ENV PORT=5000
 
 # Run the application with increased timeout (120s) for AI model loading
-CMD gunicorn --bind 0.0.0.0:$PORT --workers 4 --timeout 120 app:app
+# Reduced workers to 1 to prevent Out-Of-Memory crashes on Free Tier, added threads for concurrency
+CMD gunicorn --bind 0.0.0.0:$PORT --workers 1 --threads 8 --timeout 120 app:app
