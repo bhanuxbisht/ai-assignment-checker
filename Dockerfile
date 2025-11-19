@@ -25,13 +25,10 @@ COPY . .
 # Create necessary directories
 RUN mkdir -p uploads results
 
-# Expose port
-EXPOSE 5000
-
 # Set environment variables
 ENV FLASK_APP=app.py
 ENV FLASK_ENV=production
 ENV PORT=5000
 
-# Run the application
-CMD gunicorn --bind 0.0.0.0:$PORT --workers 4 app:app
+# Run the application with increased timeout (120s) for AI model loading
+CMD gunicorn --bind 0.0.0.0:$PORT --workers 4 --timeout 120 app:app
