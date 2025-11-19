@@ -1,0 +1,150 @@
+{% extends "base.html" %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero-section d-flex align-items-center position-relative overflow-hidden">
+    <div class="container position-relative z-2">
+        <div class="row align-items-center">
+            <div class="col-lg-6" data-aos="fade-up">
+                <span class="badge bg-white text-primary shadow-sm px-3 py-2 rounded-pill mb-3 fw-semibold">
+                    <i class="fas fa-sparkles me-2"></i>AI-Powered Grading
+                </span>
+                <h1 class="display-3 fw-bold mb-4 text-gradient">
+                    Grading Reimagined.<br>
+                    <span class="text-dark">Effortless & Precise.</span>
+                </h1>
+                <p class="lead text-muted mb-5">
+                    Experience the future of education with Light AI. Upload assignments and let our advanced Gemini 2.0 engine handle the rest with unmatched accuracy.
+                </p>
+                <div class="d-flex gap-3">
+                    <a href="{{ url_for('register') }}" class="btn btn-primary btn-lg px-5 shadow-lg">Start Free Trial</a>
+                    <a href="#features" class="btn btn-outline-secondary btn-lg px-5 bg-white">Learn More</a>
+                </div>
+                
+                <div class="mt-5 d-flex align-items-center gap-4">
+                    <div class="d-flex align-items-center">
+                        <div class="d-flex ms-2">
+                            <i class="fas fa-star text-warning"></i>
+                            <i class="fas fa-star text-warning"></i>
+                            <i class="fas fa-star text-warning"></i>
+                            <i class="fas fa-star text-warning"></i>
+                            <i class="fas fa-star text-warning"></i>
+                        </div>
+                        <span class="ms-2 text-muted fw-medium">4.9/5 Rating</span>
+                    </div>
+                    <div class="border-start border-2 h-50"></div>
+                    <div class="text-muted fw-medium">
+                        <i class="fas fa-check-circle text-success me-1"></i> 10k+ Papers Graded
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6 mt-5 mt-lg-0" data-aos="fade-left" data-aos-delay="200">
+                <div class="position-relative floating-3d">
+                    <div class="glass-card p-4 rounded-5 shadow-lg border-0 bg-white">
+                        <div class="d-flex align-items-center mb-4">
+                            <div class="rounded-circle bg-primary bg-opacity-10 p-3 me-3">
+                                <i class="fas fa-file-alt text-primary fa-lg"></i>
+                            </div>
+                            <div>
+                                <h5 class="mb-0 fw-bold">Assignment_01.pdf</h5>
+                                <small class="text-muted">Processing complete</small>
+                            </div>
+                            <span class="badge bg-success bg-opacity-10 text-success ms-auto px-3 py-2 rounded-pill">A+ Grade</span>
+                        </div>
+                        
+                        <div class="p-3 bg-light rounded-4 mb-3">
+                            <div class="d-flex justify-content-between mb-2">
+                                <span class="text-muted small">Accuracy</span>
+                                <span class="fw-bold text-primary small">98%</span>
+                            </div>
+                            <div class="progress" style="height: 6px;">
+                                <div class="progress-bar bg-primary" role="progressbar" style="width: 98%"></div>
+                            </div>
+                        </div>
+
+                        <div class="d-flex gap-2">
+                            <div class="badge bg-secondary bg-opacity-10 text-dark px-3 py-2 rounded-pill">
+                                <i class="fas fa-bolt text-warning me-1"></i> Fast
+                            </div>
+                            <div class="badge bg-secondary bg-opacity-10 text-dark px-3 py-2 rounded-pill">
+                                <i class="fas fa-shield-alt text-success me-1"></i> Secure
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Floating Elements -->
+                    <div class="position-absolute top-0 end-0 translate-middle-y bg-white p-3 rounded-4 shadow-lg floating-3d" style="animation-delay: 1s; margin-top: -20px; margin-right: -20px;">
+                        <i class="fas fa-check-circle text-success fa-2x"></i>
+                    </div>
+                    <div class="position-absolute bottom-0 start-0 translate-middle-x bg-white p-3 rounded-4 shadow-lg floating-3d" style="animation-delay: 2s; margin-bottom: -20px; margin-left: -20px;">
+                        <span class="fw-bold text-dark">Gemini 2.0</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Features Section -->
+<section id="features" class="py-5 bg-white">
+    <div class="container py-5">
+        <div class="text-center mb-5" data-aos="fade-up">
+            <span class="text-primary fw-bold text-uppercase letter-spacing-2">Features</span>
+            <h2 class="display-5 fw-bold mt-2 mb-3">Why Choose Light AI?</h2>
+            <p class="text-muted lead mx-auto" style="max-width: 600px;">
+                Powerful tools designed to make grading effortless, accurate, and beautiful.
+            </p>
+        </div>
+
+        <div class="row g-4">
+            <!-- Feature 1 -->
+            <div class="col-md-4" data-aos="fade-up" data-aos-delay="100">
+                <div class="glass-card p-4 h-100 text-center hover-scale">
+                    <div class="icon-box bg-primary bg-opacity-10 text-primary rounded-circle mx-auto mb-4 d-flex align-items-center justify-content-center" style="width: 80px; height: 80px;">
+                        <i class="fas fa-brain fa-2x"></i>
+                    </div>
+                    <h4 class="fw-bold mb-3">Smart Analysis</h4>
+                    <p class="text-muted">Powered by Gemini 2.0 Flash for human-like understanding of complex topics.</p>
+                </div>
+            </div>
+
+            <!-- Feature 2 -->
+            <div class="col-md-4" data-aos="fade-up" data-aos-delay="200">
+                <div class="glass-card p-4 h-100 text-center hover-scale">
+                    <div class="icon-box bg-danger bg-opacity-10 text-danger rounded-circle mx-auto mb-4 d-flex align-items-center justify-content-center" style="width: 80px; height: 80px;">
+                        <i class="fas fa-bolt fa-2x"></i>
+                    </div>
+                    <h4 class="fw-bold mb-3">Instant Results</h4>
+                    <p class="text-muted">Get detailed feedback and grades in seconds, not days. Save hours of work.</p>
+                </div>
+            </div>
+
+            <!-- Feature 3 -->
+            <div class="col-md-4" data-aos="fade-up" data-aos-delay="300">
+                <div class="icon-box bg-success bg-opacity-10 text-success rounded-circle mx-auto mb-4 d-flex align-items-center justify-content-center" style="width: 80px; height: 80px;">
+                        <i class="fas fa-chart-pie fa-2x"></i>
+                    </div>
+                    <h4 class="fw-bold mb-3">Deep Insights</h4>
+                    <p class="text-muted">Comprehensive analytics to track student performance and identify gaps.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA Section -->
+<section class="py-5">
+    <div class="container">
+        <div class="glass-card bg-primary text-white p-5 rounded-5 text-center position-relative overflow-hidden" data-aos="zoom-in">
+            <div class="position-relative z-2">
+                <h2 class="display-5 fw-bold mb-4">Ready to transform your grading?</h2>
+                <p class="lead mb-5 opacity-75">Join thousands of educators using Light AI today.</p>
+                <a href="{{ url_for('register') }}" class="btn btn-light btn-lg px-5 rounded-pill text-primary fw-bold shadow-lg">Get Started Now</a>
+            </div>
+            <!-- Decorative circles -->
+            <div class="position-absolute top-0 start-0 translate-middle rounded-circle bg-white opacity-10" style="width: 300px; height: 300px;"></div>
+            <div class="position-absolute bottom-0 end-0 translate-middle rounded-circle bg-white opacity-10" style="width: 400px; height: 400px;"></div>
+        </div>
+    </div>
+</section>
+{% endblock %}

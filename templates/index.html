@@ -1,120 +1,102 @@
 {% extends "base.html" %}
 
-{% block title %}AI Assignment Checker - Upload Files{% endblock %}
+{% block title %}Dashboard - Light AI{% endblock %}
 
 {% block content %}
-<div class="row">
-    <div class="col-lg-8 mx-auto">
-        <div class="card shadow">
-            <div class="card-header bg-primary text-white">
-                <h4 class="mb-0">
-                    <i class="fas fa-upload me-2"></i>
-                    Upload Assignment Files
-                </h4>
-            </div>
-            <div class="card-body">
-                <div class="alert alert-info">
-                    <i class="fas fa-info-circle me-2"></i>
-                    <strong>Instructions:</strong>
-                    <ul class="mb-0 mt-2">
-                        <li>Upload the question paper (PDF or Image)</li>
-                        <li>Upload multiple student answer sheets</li>
-                        <li>Supported formats: PDF, PNG, JPG, JPEG, GIF, TXT</li>
-                        <li>Maximum file size: 16MB per file</li>
-                    </ul>
-                </div>
-
-                <form id="uploadForm" method="POST" action="{{ url_for('upload_files') }}" enctype="multipart/form-data">
-                    <!-- Question Paper Upload -->
-                    <div class="mb-4">
-                        <label for="question_file" class="form-label">
-                            <i class="fas fa-file-alt me-2"></i>
-                            Question Paper
-                        </label>
-                        <input type="file" class="form-control" id="question_file" name="question_file" 
-                               accept=".pdf,.png,.jpg,.jpeg,.gif,.txt" required>
-                        <div class="form-text">Upload the question paper that students need to answer.</div>
-                    </div>
-
-                    <!-- Answer Sheets Upload with Dynamic Add/Remove -->
-                    <div class="mb-4">
-                        <label class="form-label">
-                            <i class="fas fa-file-upload me-2"></i>
-                            Student Answer Sheets
-                        </label>
-                        
-                        <!-- File List Container -->
-                        <div id="answerFilesList" class="mb-3">
-                            <!-- Files will be added here dynamically -->
-                        </div>
-                        
-                        <!-- Add File Button -->
-                        <button type="button" class="btn btn-outline-primary btn-sm" id="addFileBtn">
-                            <i class="fas fa-plus me-2"></i>
-                            Add Answer File
-                        </button>
-                        
-                        <!-- Hidden file input -->
-                        <input type="file" id="hiddenFileInput" 
-                               accept=".pdf,.png,.jpg,.jpeg,.gif,.txt" 
-                               style="display: none;">
-                        
-                        <div class="form-text mt-2">
-                            Click "Add Answer File" to select files from different folders. 
-                            You can add files one by one and remove unwanted ones.
-                        </div>
-                    </div>
-
-                    <!-- Upload Progress -->
-                    <div id="uploadProgress" class="mb-3" style="display: none;">
-                        <div class="progress">
-                            <div class="progress-bar progress-bar-striped progress-bar-animated" 
-                                 role="progressbar" style="width: 0%"></div>
-                        </div>
-                        <small class="text-muted">Processing files... This may take a few minutes.</small>
-                    </div>
-
-                    <!-- Submit Button -->
-                    <div class="d-grid">
-                        <button type="submit" class="btn btn-primary btn-lg" id="submitBtn">
-                            <i class="fas fa-magic me-2"></i>
-                            Start AI Evaluation
-                        </button>
-                    </div>
-                </form>
+<div class="dashboard-container py-5 min-vh-100" style="background-color: var(--bg-color);">
+    <div class="container" style="margin-top: 80px;">
+        <div class="row mb-5" data-aos="fade-down">
+            <div class="col-12 text-center">
+                <h2 class="fw-bold display-5 mb-2">Dashboard</h2>
+                <p class="text-muted lead">Welcome back, {{ current_user.username }}! Ready to grade?</p>
             </div>
         </div>
 
-        <!-- Features Section -->
-        <div class="row mt-5">
-            <div class="col-md-4">
-                <div class="text-center">
-                    <div class="feature-icon bg-primary text-white rounded-circle mx-auto mb-3">
-                        <i class="fas fa-eye fa-2x"></i>
+        <div class="row">
+            <div class="col-lg-8 mx-auto" data-aos="fade-up">
+                <div class="glass-card border-0 shadow-lg rounded-5 overflow-hidden bg-white">
+                    <div class="card-header bg-transparent border-0 p-5 pb-0">
+                        <h4 class="mb-0 fw-bold text-dark">
+                            <i class="fas fa-upload me-2 text-primary"></i>
+                            New Grading Session
+                        </h4>
                     </div>
-                    <h5>OCR Technology</h5>
-                    <p class="text-muted">Extract text from images and PDFs automatically using advanced OCR.</p>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="text-center">
-                    <div class="feature-icon bg-success text-white rounded-circle mx-auto mb-3">
-                        <i class="fas fa-brain fa-2x"></i>
+                    <div class="card-body p-5">
+                        <div class="alert alert-primary bg-primary bg-opacity-10 border-0 text-primary rounded-4 mb-4 d-flex align-items-center">
+                            <i class="fas fa-info-circle me-3 fa-lg"></i>
+                            <div>
+                                <strong>Quick Start:</strong> Upload your question paper and student answers below.
+                            </div>
+                        </div>
+
+                        <form id="uploadForm" method="POST" action="{{ url_for('upload_files') }}" enctype="multipart/form-data">
+                            <!-- Question Paper Upload -->
+                            <div class="mb-4">
+                                <label for="question_file" class="form-label fw-semibold text-dark">
+                                    <i class="fas fa-file-alt me-2 text-muted"></i>
+                                    Question Paper
+                                </label>
+                                <div class="input-group">
+                                    <input type="file" class="form-control form-control-lg bg-light border-0 rounded-4" 
+                                           id="question_file" name="question_file" 
+                                           accept=".pdf,.png,.jpg,.jpeg,.gif,.txt" required>
+                                </div>
+                                <div class="form-text text-muted ms-2">Upload the question paper (PDF/Image)</div>
+                            </div>
+
+                            <!-- Answer Sheets Upload with Dynamic Add/Remove -->
+                            <div class="mb-4">
+                                <label class="form-label fw-semibold text-dark">
+                                    <i class="fas fa-file-upload me-2 text-muted"></i>
+                                    Student Answer Sheets
+                                </label>
+                                
+                                <!-- File List Container -->
+                                <div id="answerFilesList" class="mb-3 d-flex flex-column gap-2">
+                                    <!-- Files will be added here dynamically -->
+                                </div>
+                                
+                                <!-- Add File Button -->
+                                <button type="button" class="btn btn-outline-primary btn-sm rounded-pill px-4 py-2 fw-semibold" id="addFileBtn">
+                                    <i class="fas fa-plus me-2"></i>
+                                    Add Answer File
+                                </button>
+                                
+                                <!-- Hidden file input -->
+                                <input type="file" id="hiddenFileInput" 
+                                       accept=".pdf,.png,.jpg,.jpeg,.gif,.txt" 
+                                       style="display: none;">
+                                
+                                <div class="form-text mt-2 text-muted ms-2">
+                                    Add files from different folders. Supported: PDF, Images, TXT.
+                                </div>
+                            </div>
+
+                            <!-- Upload Progress -->
+                            <div id="uploadProgress" class="mb-3" style="display: none;">
+                                <div class="progress bg-light rounded-pill" style="height: 10px;">
+                                    <div class="progress-bar progress-bar-striped progress-bar-animated bg-primary rounded-pill" 
+                                         role="progressbar" style="width: 0%"></div>
+                                </div>
+                                <small class="text-muted mt-2 d-block text-center">Processing with AI... This may take a moment.</small>
+                            </div>
+
+                            <!-- Submit Button -->
+                            <div class="d-grid mt-5">
+                                <button type="submit" class="btn btn-primary btn-lg rounded-pill shadow-lg hover-scale fw-bold py-3" id="submitBtn">
+                                    <i class="fas fa-magic me-2"></i>
+                                    Start AI Evaluation
+                                </button>
+                            </div>
+                        </form>
                     </div>
-                    <h5>AI Evaluation</h5>
-                    <p class="text-muted">Powered by Gemini AI for intelligent answer evaluation and feedback.</p>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="text-center">
-                    <div class="feature-icon bg-info text-white rounded-circle mx-auto mb-3">
-                        <i class="fas fa-file-excel fa-2x"></i>
-                    </div>
-                    <h5>Excel Reports</h5>
-                    <p class="text-muted">Generate comprehensive Excel reports with scores and feedback.</p>
                 </div>
             </div>
         </div>
     </div>
 </div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
 {% endblock %}
