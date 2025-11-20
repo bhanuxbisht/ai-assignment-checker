@@ -2,14 +2,17 @@
 
 An intelligent web application that helps teachers automatically evaluate student assignments using AI, OCR, and NLP technologies. Upload question papers and student answers, and get detailed evaluations with scores and feedback in seconds!
 
-**🎯 Last Updated: September 24, 2025 - Fully functional and deployed!**
+**🎯 Last Updated: November 20, 2025 - Fully functional with Testing Suite!**
 
 ![AI Assignment Checker](https://img.shields.io/badge/AI%20Powered-Gemini%20AI-blue)
-![Python](https://img.shields.io/badge/Python-3.9%2B-green)
+![Python](https://img.shields.io/badge/Python-3.11%2B-green)
 ![Flask](https://img.shields.io/badge/Flask-Web%20Framework-red)
+![Tests](https://img.shields.io/badge/Tests-Pytest-yellow)
+![Coverage](https://img.shields.io/badge/Coverage-44%25-orange)
 
 ## ✨ Features
 
+- **🔐 Secure Authentication**: User registration, login, and protected dashboards
 - **🔍 OCR Technology**: Extract text from PDFs and images automatically
 - **🧠 AI-Powered Evaluation**: Uses Google's Gemini AI for intelligent answer assessment
 - **📊 Comprehensive Reports**: Generate detailed Excel reports with scores and feedback
@@ -17,6 +20,7 @@ An intelligent web application that helps teachers automatically evaluate studen
 - **📁 Multi-Format Support**: Supports PDF, PNG, JPG, JPEG, GIF, and TXT files
 - **⚡ Fast Processing**: Batch process multiple student answers simultaneously
 - **💬 Detailed Feedback**: Get specific suggestions for student improvement
+- **🧪 Robust Testing**: Integrated test suite with mocking for reliable development
 
 ## 🚀 Quick Start
 
@@ -167,11 +171,18 @@ docker run -p 5000:5000 -e GEMINI_API_KEY=your_api_key bhanuxbisht/ai-assignment
 ```
 ai-assignment-checker/
 ├── app.py                 # Main Flask application
-├── requirements.txt       # Python dependencies
+├── requirements.txt       # Production dependencies
+├── requirements-dev.txt   # Testing dependencies
 ├── .env.example          # Environment variables template
 ├── README.md             # This file
+├── README_TESTS.md       # Testing documentation
+├── pytest.ini            # Test configuration
 ├── uploads/              # Uploaded files storage
 ├── results/              # Generated reports storage
+├── tests/                # Test suite
+│   ├── conftest.py       # Test fixtures
+│   ├── test_routes.py    # Integration tests
+│   └── test_utils.py     # Unit tests
 ├── static/               # Static assets
 │   ├── css/
 │   │   └── style.css     # Custom styles
@@ -179,7 +190,9 @@ ai-assignment-checker/
 │       └── main.js       # JavaScript functionality
 └── templates/            # HTML templates
     ├── base.html         # Base template
-    ├── index.html        # Upload form
+    ├── index.html        # Dashboard
+    ├── login.html        # Login page
+    ├── register.html     # Registration page
     └── results.html      # Results display
 ```
 
@@ -293,7 +306,28 @@ export FLASK_DEBUG=1
 
 ## 🧪 Testing
 
-### Test the Application
+### Automated Tests (New!)
+
+We use `pytest` for professional-grade automated testing. The suite includes unit tests and integration tests with mocking for external services (Gemini/OCR).
+
+1. **Install Testing Dependencies**
+   ```bash
+   pip install -r requirements-dev.txt
+   ```
+
+2. **Run All Tests**
+   ```bash
+   pytest
+   ```
+
+3. **Check Coverage**
+   ```bash
+   pytest --cov=app --cov-report=term-missing
+   ```
+
+See [README_TESTS.md](README_TESTS.md) for detailed testing documentation.
+
+### Manual Testing
 
 1. **Health Check**
    ```
@@ -359,7 +393,6 @@ If you encounter any issues:
 
 - [ ] Support for more file formats (DOCX, PPTX)
 - [ ] Real-time progress tracking
-- [ ] User authentication and assignment history
 - [ ] Custom rubric creation
 - [ ] Integration with Learning Management Systems
 - [ ] Multi-language support
