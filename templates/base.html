@@ -25,28 +25,15 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto align-items-center">
-                    {% if current_user.is_authenticated %}
-                        <li class="nav-item">
-                            <a class="nav-link active" href="{{ url_for('dashboard') }}">Dashboard</a>
-                        </li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
-                                <i class="fas fa-user-circle me-1"></i> {{ current_user.username }}
-                            </a>
-                            <ul class="dropdown-menu dropdown-menu-end border-0 shadow-lg rounded-4 p-2">
-                                <li><a class="dropdown-item rounded-3" href="#">Profile</a></li>
-                                <li><hr class="dropdown-divider"></li>
-                                <li><a class="dropdown-item text-danger rounded-3" href="{{ url_for('logout') }}">Logout</a></li>
-                            </ul>
-                        </li>
-                    {% else %}
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ url_for('login') }}">Login</a>
-                        </li>
-                        <li class="nav-item ms-3">
-                            <a class="btn btn-primary btn-sm px-4" href="{{ url_for('register') }}">Get Started</a>
-                        </li>
-                    {% endif %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('dashboard') }}">Dashboard</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/#features">Features</a>
+                    </li>
+                    <li class="nav-item ms-3">
+                        <a class="btn btn-primary btn-sm px-4" href="{{ url_for('dashboard') }}">Get Started</a>
+                    </li>
                 </ul>
             </div>
         </div>
@@ -106,7 +93,7 @@
                             </a>
                         </li>
                         <li class="mb-2">
-                            <a href="#" class="text-decoration-none text-muted">
+                            <a href="https://www.linkedin.com/in/yogendra-bisht/" target="_blank" class="text-decoration-none text-muted">
                                 <i class="fab fa-linkedin me-2"></i> LinkedIn
                             </a>
                         </li>

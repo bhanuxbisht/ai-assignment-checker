@@ -44,8 +44,8 @@ function addFilesToList(files) {
             return;
         }
         
-        if (file.size > 16 * 1024 * 1024) {
-            showNotification(`File ${file.name} is too large (max 16MB).`, 'warning');
+        if (file.size > 100 * 1024 * 1024) {
+            showNotification(`File ${file.name} is too large (max 100MB).`, 'warning');
             return;
         }
         
@@ -156,19 +156,33 @@ function initializeUploadForm() {
 
             if (progressDiv) {
                 progressDiv.style.display = 'block';
+                // Start with simulated progress, will switch to real polling once we get session ID
                 simulateProgress();
             }
             
-            // Submit form via AJAX
+            // Submit form via AJAX with extended timeout for large files
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => controller.abort(), 600000); // 10 minute timeout for large OCR files
+            
             fetch(form.action, {
                 method: 'POST',
-                body: formData
+                body: formData,
+                signal: controller.signal,
+                redirect: 'follow'  // Follow redirects automatically
             })
             .then(response => {
+                clearTimeout(timeoutId);
+                stopProgressPolling(); // Stop any active polling
+                
+                // Check if we were redirected to login (session expired)
+                if (response.url && response.url.includes('/login')) {
+                    throw new Error('Session expired. Please login again.');
+                }
+                
                 if (response.ok) {
                     return response.text();
                 }
-                throw new Error('Upload failed');
+                throw new Error('Upload failed - Status: ' + response.status);
             })
             .then(html => {
                 // Replace page content with response
@@ -177,8 +191,19 @@ function initializeUploadForm() {
                 document.close();
             })
             .catch(error => {
+                clearTimeout(timeoutId);
                 console.error('Error:', error);
-                showNotification('Upload failed. Please try again.', 'danger');
+                let errorMsg = 'Upload failed. ';
+                if (error.name === 'AbortError') {
+                    errorMsg += 'Request timed out. The file may be too large or OCR is taking too long.';
+                } else if (error.message.includes('Session expired')) {
+                    errorMsg = 'Session expired. Please login again.';
+                    // Redirect to login page
+                    setTimeout(() => window.location.href = '/login', 2000);
+                } else {
+                    errorMsg += 'Please try again.';
+                }
+                showNotification(errorMsg, 'danger');
                 if (submitBtn) {
                     submitBtn.disabled = false;
                     submitBtn.innerHTML = '<i class="fas fa-magic me-2"></i>Start AI Evaluation';
@@ -206,8 +231,8 @@ function validateFiles() {
             errorMessage += 'Question paper must be PDF, Image, or Text file.\n';
             isValid = false;
         }
-        if (questionFile.files[0].size > 16 * 1024 * 1024) {
-            errorMessage += 'Question paper file is too large (max 16MB).\n';
+        if (questionFile.files[0].size > 100 * 1024 * 1024) {
+            errorMessage += 'Question paper file is too large (max 100MB).\n';
             isValid = false;
         }
     }
@@ -247,6 +272,56 @@ function simulateProgress() {
             progressBar.style.width = '100%';
         }
     }, 500);
+}
+
+// Real-time progress polling for upload processing
+let progressPollingInterval = null;
+let currentSessionId = null;
+
+function startProgressPolling(sessionId) {
+    currentSessionId = sessionId;
+    const progressBar = document.querySelector('#uploadProgress .progress-bar');
+    const progressText = document.querySelector('#uploadProgress small');
+    
+    if (!progressBar) return;
+    
+    progressPollingInterval = setInterval(() => {
+        fetch(`/upload/progress/${sessionId}`)
+            .then(response => response.json())
+            .then(data => {
+                const percentage = data.percentage || 0;
+                const current = data.current || 0;
+                const total = data.total || 0;
+                const status = data.status || 'processing';
+                
+                progressBar.style.width = percentage + '%';
+                progressBar.setAttribute('aria-valuenow', percentage);
+                
+                if (progressText) {
+                    if (status === 'complete') {
+                        progressText.textContent = `✅ Complete! Processed ${total} files.`;
+                    } else if (status === 'saving files') {
+                        progressText.textContent = `📁 Saving files...`;
+                    } else {
+                        progressText.textContent = `🔄 Processing: ${current}/${total} files (${percentage}%)`;
+                    }
+                }
+                
+                if (status === 'complete' || percentage >= 100) {
+                    stopProgressPolling();
+                }
+            })
+            .catch(err => {
+                console.log('Progress polling error:', err);
+            });
+    }, 1000); // Poll every second
+}
+
+function stopProgressPolling() {
+    if (progressPollingInterval) {
+        clearInterval(progressPollingInterval);
+        progressPollingInterval = null;
+    }
 }
 
 function initializeFilePreview() {

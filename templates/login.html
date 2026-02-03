@@ -11,15 +11,33 @@
             <p class="text-muted">Login to your Light AI dashboard</p>
         </div>
         
+        <!-- Flash Messages -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }} alert-dismissible fade show rounded-4 mb-3" role="alert">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+        
         <form method="POST" action="">
             {{ form.hidden_tag() }}
             <div class="mb-3">
                 {{ form.email.label(class="form-label fw-semibold text-dark") }}
                 {{ form.email(class="form-control form-control-lg bg-light border-0 rounded-4", placeholder="name@example.com") }}
+                {% for error in form.email.errors %}
+                    <small class="text-danger">{{ error }}</small>
+                {% endfor %}
             </div>
             <div class="mb-4">
                 {{ form.password.label(class="form-label fw-semibold text-dark") }}
                 {{ form.password(class="form-control form-control-lg bg-light border-0 rounded-4", placeholder="••••••••") }}
+                {% for error in form.password.errors %}
+                    <small class="text-danger">{{ error }}</small>
+                {% endfor %}
             </div>
             <div class="d-grid gap-2">
                 {{ form.submit(class="btn btn-primary btn-lg rounded-pill shadow-lg hover-scale fw-bold") }}
